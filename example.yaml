@@ -1,0 +1,17 @@
+ dev:
+    aws:
+      account: "test"
+      role: test
+      profile: test-dev
+      region: us-east-1
+    eks:
+      cluster: test
+    helm:
+      autoDeploy: true
+      install:
+       - releaseName: "onyx-test"
+         version: "0.1.0"
+         values: "values/dev/blah1.yaml"
+       - releaseName: "onyx-test2"
+         version: "0.1.1-58"
+         values: "values/dev/blah2.yaml"
