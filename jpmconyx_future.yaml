@@ -1,0 +1,44 @@
+pipeline:
+  name: Sample Helm
+  identifier: Sample_Helm
+  template:
+    templateRef: account.goldenpath
+    versionLabel: v1
+    templateInputs:
+      stages:
+        - parallel:
+            - stage:
+                identifier: Deploy_To_Dev
+                type: Deployment
+                spec:
+                  services:
+                    values:
+                      - serviceRef: sampleawesomeservicecm
+            - stage:
+                identifier: Deploy_to_Dev_Helm
+                type: Deployment
+                spec:
+                  services:
+                    values:
+                      - serviceRef: sampleawesomeservicehelm
+                        serviceInputs:
+                          serviceDefinition:
+                            type: NativeHelm
+                            spec:
+                              variables:
+                                - name: helmChartVersion
+                                  type: String
+                                  value: 1.0.2
+                                - name: ValuePaths
+                                  type: String
+                                  value: [values/dev/sample-awesome-service-values.yaml,values/dev/sample-awesome-service-values2.yaml,path3,path4]
+      variables:
+        - name: cluster_name
+          type: String
+          value: awesomedev
+        - name: namespace
+          type: String
+          value: awesome
+  tags: {}
+  projectIdentifier: Sample_Awesome
+  orgIdentifier: Workload

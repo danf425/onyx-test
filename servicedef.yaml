@@ -1,0 +1,36 @@
+service:
+  name: onyx-test
+  identifier: onyxtest
+  orgIdentifier: SE_Sandbox
+  projectIdentifier: DanF
+  serviceDefinition:
+    spec:
+      manifests:
+        - manifest:
+            identifier: chart
+            type: HelmChart
+            spec:
+              store:
+                type: Http
+                spec:
+                  connectorRef: bitnami
+              chartName: nginx
+              chartVersion: <+input>
+              subChartPath: ""
+              helmVersion: V3
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+        - manifest:
+            identifier: values
+            type: Values
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: danf_gh
+                  gitFetchType: Branch
+                  paths:
+                    - test
+                  repoName: onyx-test
+                  branch: main
+    type: NativeHelm
